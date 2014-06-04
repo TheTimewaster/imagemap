@@ -1,23 +1,20 @@
 package draw;
 
+
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.Stroke;
 import java.io.Serializable;
 
+
 public class Oval implements GraphObject, Serializable {
-	/**
-	 * 
-	 */
+	private final Color strokeColor = Color.black;
+	private final int strokeThickness = 2;
 	private static final long serialVersionUID = -8290256134052754277L;
 	private int sx;
 	private int sy;
 	private int ex;
 	private int ey;
-	private Color fillColor;
-	private Color strokeColor;
-	private int strokeThickness;
 
 	@Override
 	public void setStartX(int sx) {
@@ -58,28 +55,8 @@ public class Oval implements GraphObject, Serializable {
 			g2.setStroke(new BasicStroke(strokeThickness));
 			g2.setColor(strokeColor);
 			g2.drawOval(sx, sy, Math.abs(sx - ex), Math.abs(sy - ey));
-			g2.setColor(fillColor);
-			g2.fillOval(sx, sy, Math.abs(sx - ex), Math.abs(sy - ey));
 		}
 		// g2.drawOval(sx, sy, Math.abs(sx-ex), Math.abs(sy-ey));
-	}
-
-	@Override
-	public void setFillColor(Color c) {
-		// TODO Auto-generated method stub
-		this.fillColor = c;
-	}
-
-	@Override
-	public void setStrokeColor(Color c) {
-		// TODO Auto-generated method stub
-		this.strokeColor = c;
-	}
-
-	@Override
-	public void setStroke(int s) {
-		// TODO Auto-generated method stub
-		this.strokeThickness = s;
 	}
 
 	@Override

@@ -1,5 +1,6 @@
 package ui;
 
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -29,6 +30,7 @@ import draw.Oval;
 import draw.Poly;
 import draw.Rectangle;
 
+
 public class PaintPanel extends JPanel {
 	/**
 	 * 
@@ -37,9 +39,6 @@ public class PaintPanel extends JPanel {
 	private ArrayList<GraphObject> paintList = new ArrayList<GraphObject>();
 	GraphObject currentObject;
 	SelectedItem sItem = SelectedItem.rect;
-	private Color fc;
-	private Color sc;
-	private int str;
 	private File file;
 	private File fImage;
 	private BufferedImage bImage;
@@ -64,8 +63,6 @@ public class PaintPanel extends JPanel {
 							currentObject.setEndY(e.getY());
 							((Poly) currentObject).addCoords();
 
-							currentObject.setStroke(str);
-
 							if (SwingUtilities.isRightMouseButton(e)) {
 								repaint();
 								paintList.add(currentObject);
@@ -79,7 +76,6 @@ public class PaintPanel extends JPanel {
 					// currentObject = new Line();
 					currentObject.setStartX(e.getX());
 					currentObject.setStartY(e.getY());
-					currentObject.setStroke(str);
 				}
 			}
 
@@ -113,9 +109,6 @@ public class PaintPanel extends JPanel {
 		Graphics2D g2D = (Graphics2D) g;
 		if (currentObject != null) {
 			currentObject.paint(g2D, false);
-			currentObject.setFillColor(fc);
-			currentObject.setStrokeColor(sc);
-			currentObject.setStroke(str);
 		}
 		for (GraphObject gObject : paintList) {
 			gObject.paint(g2D, true);
@@ -125,6 +118,7 @@ public class PaintPanel extends JPanel {
 	public void openImage() {
 		try {
 			bImage = ImageIO.read(fImage);
+			repaint();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -179,8 +173,8 @@ public class PaintPanel extends JPanel {
 		}
 
 	}
-	
-	public void emptyList(){
+
+	public void emptyList() {
 		paintList.clear();
 		repaint();
 	}
@@ -192,21 +186,9 @@ public class PaintPanel extends JPanel {
 	public void setsItem(SelectedItem sItem) {
 		this.sItem = sItem;
 	}
-	
-	public ArrayList<GraphObject> getPaintList(){
+
+	public ArrayList<GraphObject> getPaintList() {
 		return paintList;
-	}
-
-	public void setColor1(Color c) {
-		this.fc = c;
-	}
-
-	public void setColor2(Color c) {
-		this.sc = c;
-	}
-
-	public void setStroke(int s) {
-		this.str = s;
 	}
 
 	public File getFile() {

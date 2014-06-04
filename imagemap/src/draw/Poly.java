@@ -1,25 +1,23 @@
 package draw;
 
+
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.io.Serializable;
 
+
 public class Poly implements GraphObject, Serializable {
 
-	/**
-	 * 
-	 */
+	private final Color strokeColor = Color.black;
+	private final int strokeThickness = 2;
 	private static final long serialVersionUID = 2075175270982188237L;
 	private int x;
 	private int y;
 	private int length = 0;
 	private int[] xCoords;
 	private int[] yCoords;
-	private Color fillColor;
-	private Color strokeColor;
-	private int strokeThickness;
 	private Polygon poly;
 
 	@Override
@@ -36,8 +34,6 @@ public class Poly implements GraphObject, Serializable {
 		} else {
 			g2.setStroke(new BasicStroke(strokeThickness));
 			g2.setColor(strokeColor);
-			g2.drawPolygon(xCoords, yCoords, length);
-			g2.setColor(fillColor);
 			g2.drawPolygon(xCoords, yCoords, length);
 		}
 	}
@@ -64,24 +60,6 @@ public class Poly implements GraphObject, Serializable {
 	public void setEndY(int ey) {
 		// TODO Auto-generated method stub
 		this.y = ey;
-	}
-
-	@Override
-	public void setFillColor(Color c) {
-		// TODO Auto-generated method stub
-		this.fillColor = c;
-	}
-
-	@Override
-	public void setStrokeColor(Color c) {
-		// TODO Auto-generated method stub
-		this.strokeColor = c;
-	}
-
-	@Override
-	public void setStroke(int s) {
-		// TODO Auto-generated method stub
-		this.strokeThickness = s;
 	}
 
 	public void addCoords() {

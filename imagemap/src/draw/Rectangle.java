@@ -1,24 +1,21 @@
 package draw;
 
+
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.Stroke;
 import java.io.Serializable;
+
 
 public class Rectangle implements GraphObject, Serializable {
 
-	/**
-	 * 
-	 */
+	private final Color strokeColor = Color.black;
+	private final int strokeThickness = 2;
 	private static final long serialVersionUID = 6266248648024696224L;
 	private int sx;
 	private int sy;
 	private int ex;
 	private int ey;
-	private Color fillColor;
-	private Color strokeColor;
-	private int strokeThickness;
 
 	@Override
 	public void setStartX(int sx) {
@@ -71,33 +68,11 @@ public class Rectangle implements GraphObject, Serializable {
 			g2.setColor(strokeColor);
 			g2.drawRect(sx - Math.abs(sx - ex), sy - Math.abs(sy - ey),
 					Math.abs(diffX), Math.abs(diffY));
-			g2.setColor(fillColor);
-			g2.fillRect(sx - Math.abs(sx - ex), sy - Math.abs(sy - ey),
-					Math.abs(diffX), Math.abs(diffY));
-
 			ex = tempx;
 			ey = tempy;
 
 		}
 
-	}
-
-	@Override
-	public void setFillColor(Color c) {
-		// TODO Auto-generated method stub
-		this.fillColor = c;
-	}
-
-	@Override
-	public void setStrokeColor(Color c) {
-		// TODO Auto-generated method stub
-		this.strokeColor = c;
-	}
-
-	@Override
-	public void setStroke(int s) {
-		// TODO Auto-generated method stub
-		this.strokeThickness = s;
 	}
 
 	@Override

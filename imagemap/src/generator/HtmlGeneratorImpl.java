@@ -1,6 +1,6 @@
 package generator;
 
-import java.awt.Image;
+
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -12,6 +12,7 @@ import draw.GraphObject;
 import draw.Oval;
 import draw.Rectangle;
 
+
 public class HtmlGeneratorImpl implements HtmlGenerator {
 
 	private final String htmlHeader = "<!DOCTYPE HTML PUBLIC '-//W3C//DTD HTML 4.01//EN'\n'http://www.w3.org/TR/html4/strict.dtd'>";
@@ -20,7 +21,8 @@ public class HtmlGeneratorImpl implements HtmlGenerator {
 	private String areas = "";
 
 	@Override
-	public String generateHTMLCode(File image, List<GraphObject> paintlist, List<String[]> attrList) {
+	public String generateHTMLCode(File image, List<GraphObject> paintlist,
+			List<String[]> attrList) {
 		// TODO Auto-generated method stub
 		BufferedImage realImage = null;
 		int i = 0;
@@ -47,14 +49,11 @@ public class HtmlGeneratorImpl implements HtmlGenerator {
 				}
 			}
 
-			temp += gObj.getCoords()[0]
-					+ " , "
-					+ gObj.getCoords()[1]
-					+ " , "
-					+ gObj.getCoords()[2]
-					+ " , "
-					+ gObj.getCoords()[3]
-					+ "' href='" + attrList.get(i)[0] + "' alt='" + attrList.get(i)[1] + "' title = '" + attrList.get(i)[2] + "' />";
+			temp += gObj.getCoords()[0] + " , " + gObj.getCoords()[1] + " , "
+					+ gObj.getCoords()[2] + " , " + gObj.getCoords()[3]
+					+ "' href='" + attrList.get(i)[0] + "' alt='"
+					+ attrList.get(i)[1] + "' title = '" + attrList.get(i)[2]
+					+ "' />";
 
 			areas += temp;
 			i++;

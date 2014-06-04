@@ -1,26 +1,23 @@
 package ui;
 
+
 import generator.HtmlGenerator;
 import generator.HtmlGeneratorImpl;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
+import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 
-public class MainFrame extends JFrame implements ActionListener, ChangeListener {
+
+public class MainFrame extends JFrame implements ActionListener {
 	/**
 	 * 
 	 */
@@ -34,11 +31,6 @@ public class MainFrame extends JFrame implements ActionListener, ChangeListener 
 	JMenuItem saveItem = new JMenuItem("Save");
 	JMenuItem resetItem = new JMenuItem("Reset");
 	JMenuItem endItem = new JMenuItem("Quit");
-	// Menu Settings
-	JMenu settingsMenu = new JMenu("Settings");
-	JMenuItem strokeColor = new JMenuItem("Stroke Color");
-	JMenuItem fillColor = new JMenuItem("Fill Color");
-	JCheckBox fillCBox = new JCheckBox("Fill");
 	// Menu Paint
 	JMenu paintMenu = new JMenu("Paint");
 	CheckboxMenuItem fillItem = new CheckboxMenuItem("Fill", false);
@@ -48,16 +40,15 @@ public class MainFrame extends JFrame implements ActionListener, ChangeListener 
 	// Menu Help
 	JMenu helpMenu = new JMenu("Help");
 	JMenuItem infoItem = new JMenuItem("About");
-	// strokeSlider
-	JSlider strokeSlider = new JSlider(JSlider.HORIZONTAL, 1, 10, 5);
 	// JFileChooser
-	JFileChooser fChooser = new JFileChooser();
+	JFileChooser fChooser = new JFileChooser("../../resources");
 	// JTextField
 	JTextArea tArea = new JTextArea(5, 5);
 	// Generate Button
 	JButton generateButton = new JButton("Generate");
 	// Table
-	String[] columns = { "SHAPE", "DIMENSIONS", "HREF", "ALT", "TITLE","DELETE" };
+	String[] columns = { "SHAPE", "DIMENSIONS", "HREF", "ALT", "TITLE",
+			"DELETE" };
 	DefaultTableModel model = new DefaultTableModel(0, columns.length);
 	public JTable table = new JTable();
 
@@ -88,14 +79,10 @@ public class MainFrame extends JFrame implements ActionListener, ChangeListener 
 		saveItem.addActionListener(this);
 		resetItem.addActionListener(this);
 		endItem.addActionListener(this);
-		fillColor.addActionListener(this);
-		strokeColor.addActionListener(this);
-		fillCBox.addActionListener(this);
 		for (int i = 0; i < 3; i++) {
 			pItem[i].addActionListener(this);
 		}
 
-		strokeSlider.addChangeListener(this);
 		generateButton.addActionListener(this);
 	}
 
@@ -107,21 +94,6 @@ public class MainFrame extends JFrame implements ActionListener, ChangeListener 
 		fileMenu.addSeparator();
 		fileMenu.add(endItem);
 		bar.add(fileMenu);
-
-		settingsMenu.add(strokeColor);
-		settingsMenu.add(fillColor);
-		settingsMenu.addSeparator();
-		settingsMenu.add(fillCBox);
-		settingsMenu.addSeparator();
-		settingsMenu.add(strokeSlider);
-
-		strokeSlider.setMajorTickSpacing(5);
-		strokeSlider.setMinorTickSpacing(1);
-		strokeSlider.setPaintTicks(true);
-		strokeSlider.setPaintLabels(true);
-
-		bar.add(settingsMenu);
-
 		bar.add(paintMenu);
 
 		for (int i = 0; i < str.length; i++) {
@@ -130,23 +102,21 @@ public class MainFrame extends JFrame implements ActionListener, ChangeListener 
 			bg.add(pItem[i]);
 		}
 
-		fillCBox.setSelected(false);
 		pItem[2].setSelected(true);
 
 		bar.add(helpMenu);
 
 		bar.add(generateButton);
 
-		pPanel.setColor1(new Color(0, 0, 0, 0));
-		pPanel.setColor2(Color.BLACK);
-		pPanel.setStroke(5);
-		// fChooser.setFileFilter(new FileNameExtensionFilter("*.shapes"));
-
 		model.setColumnIdentifiers(columns);
 		table.setModel(model);
 		TableCellRenderer buttonRenderer = new ButtonRenderer();
 		table.getColumn("DELETE").setCellRenderer(buttonRenderer);
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+
+		FileFilter filter = new FileNameExtensionFilter("Bilder", "gif", "png",
+				"jpg");
+		fChooser.addChoosableFileFilter(filter);
 	}
 
 	@Override
@@ -160,18 +130,6 @@ public class MainFrame extends JFrame implements ActionListener, ChangeListener 
 			== JOptionPane.YES_OPTION)
 				System.out.println("End");
 			System.exit(0);
-			break;
-
-		case "Stroke Color":
-			pPanel.setColor2(JColorChooser.showDialog(this, "Stroke Color",
-					Color.black));
-			break;
-
-		case "Fill Color":
-			if (fillCBox.isSelected() == true) {
-				pPanel.setColor1(JColorChooser.showDialog(settingsMenu,
-						"Fill Color", Color.white));
-			}
 			break;
 
 		case "Open Image":
@@ -203,7 +161,7 @@ public class MainFrame extends JFrame implements ActionListener, ChangeListener 
 				pPanel.saveFile();
 			}
 			break;
-			
+
 		case "Reset":
 			pPanel.emptyList();
 			model.setRowCount(0);
@@ -242,47 +200,30 @@ public class MainFrame extends JFrame implements ActionListener, ChangeListener 
 						"No image loaded! Cannot generate imagemap!",
 						"No Image", JOptionPane.ERROR_MESSAGE);
 			} else {
-				tArea.setText(generator.generateHTMLCode(img, pPanel.getPaintList(),
-						attrList));
+				tArea.setText(generator.generateHTMLCode(img,
+						pPanel.getPaintList(), attrList));
 			}
-		}
-
-		if (fillCBox.isSelected() == false) {
-			pPanel.setColor1(new Color(0, 0, 0, 0));
-			fillColor.setEnabled(false);
-		} else {
-			fillColor.setEnabled(true);
 		}
 
 		if (pItem[0].isSelected()) {
 			pPanel.setsItem(SelectedItem.rect);
-			pPanel.setStroke(strokeSlider.getValue());
 		}
 
 		if (pItem[1].isSelected()) {
 			pPanel.setsItem(SelectedItem.oval);
-			pPanel.setStroke(strokeSlider.getValue());
 		}
 
 		if (pItem[2].isSelected()) {
 			pPanel.setsItem(SelectedItem.polygon);
-			pPanel.setStroke(strokeSlider.getValue());
 		}
-		
-	}
 
-	@Override
-	public void stateChanged(ChangeEvent e) {
-		// TODO Auto-generated method stub
-		int s = strokeSlider.getValue();
-		pPanel.setStroke(s);
 	}
 
 	public void itemDrawn(SelectedItem item) {
 		selectedItem = item;
 		String dimString = "";
-		int[] coords = pPanel.getPaintList().get(pPanel.getPaintList().size() - 1)
-				.getCoords();
+		int[] coords = pPanel.getPaintList()
+				.get(pPanel.getPaintList().size() - 1).getCoords();
 		for (int i = 0; i < coords.length; i++) {
 			dimString += coords[i];
 			if (i < coords.length - 1) {
@@ -290,32 +231,37 @@ public class MainFrame extends JFrame implements ActionListener, ChangeListener 
 			}
 		}
 		if (selectedItem == SelectedItem.rect) {
-			model.addRow(new Object[] { "Rectangle", dimString, "" , "" , "" , "Delete" });
+			model.addRow(new Object[] { "Rectangle", dimString, "", "", "",
+					"Delete" });
 		} else {
 			if (selectedItem == SelectedItem.oval) {
-				model.addRow(new Object[] { "Oval", dimString, "" , "" , "" , "Delete" });
+				model.addRow(new Object[] { "Oval", dimString, "", "", "",
+						"Delete" });
 			}
 		}
 	}
 
 }
 
+
 class ButtonRenderer extends JButton implements TableCellRenderer {
 
-	  public ButtonRenderer() {
-	    setOpaque(true);
-	  }
+	private static final long serialVersionUID = 2638053191298953450L;
 
-	  public Component getTableCellRendererComponent(JTable table, Object value,
-	      boolean isSelected, boolean hasFocus, int row, int column) {
-	    if (isSelected) {
-	      setForeground(table.getSelectionForeground());
-	      setBackground(table.getSelectionBackground());
-	    } else {
-	      setForeground(table.getForeground());
-	      setBackground(UIManager.getColor("Button.background"));
-	    }
-	    setText((value == null) ? "" : value.toString());
-	    return this;
-	  }
+	public ButtonRenderer() {
+		setOpaque(true);
 	}
+
+	public Component getTableCellRendererComponent(JTable table, Object value,
+			boolean isSelected, boolean hasFocus, int row, int column) {
+		if (isSelected) {
+			setForeground(table.getSelectionForeground());
+			setBackground(table.getSelectionBackground());
+		} else {
+			setForeground(table.getForeground());
+			setBackground(UIManager.getColor("Button.background"));
+		}
+		setText((value == null) ? "" : value.toString());
+		return this;
+	}
+}
