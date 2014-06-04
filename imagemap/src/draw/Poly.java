@@ -7,7 +7,7 @@ import java.awt.Polygon;
 import java.io.Serializable;
 
 public class Poly implements GraphObject, Serializable {
-	
+
 	/**
 	 * 
 	 */
@@ -28,12 +28,12 @@ public class Poly implements GraphObject, Serializable {
 		yCoords = new int[500];
 		poly = new Polygon();
 		// TODO Auto-generated method stub
-		if(tmp == false){
-			g2.setStroke(new BasicStroke( 1,
-					  BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER,
-					  10.0f, new float[]{ 8.0f,6.0f }, 0.0f ));
+		if (tmp == false) {
+			g2.setStroke(new BasicStroke(1, BasicStroke.CAP_SQUARE,
+					BasicStroke.JOIN_MITER, 10.0f, new float[] { 8.0f, 6.0f },
+					0.0f));
 			g2.drawPolyline(xCoords, yCoords, length);
-		}else{
+		} else {
 			g2.setStroke(new BasicStroke(strokeThickness));
 			g2.setColor(strokeColor);
 			g2.drawPolygon(xCoords, yCoords, length);
@@ -83,8 +83,8 @@ public class Poly implements GraphObject, Serializable {
 		// TODO Auto-generated method stub
 		this.strokeThickness = s;
 	}
-	
-	public void addCoords(){
+
+	public void addCoords() {
 		xCoords[length] = x;
 		yCoords[length] = y;
 		length++;

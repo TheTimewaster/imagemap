@@ -8,6 +8,6 @@ import draw.GraphObject;
 
 public interface HtmlGenerator {
 	
-	public String generateHTMLCode(File img,List<GraphObject> paintlist);
+	public String generateHTMLCode(File img,List<GraphObject> paintlist, List<String[]> attrList);
 
 }

@@ -1,6 +1,5 @@
 package generator;
 
-
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -13,7 +12,6 @@ import draw.GraphObject;
 import draw.Oval;
 import draw.Rectangle;
 
-
 public class HtmlGeneratorImpl implements HtmlGenerator {
 
 	private final String htmlHeader = "<!DOCTYPE HTML PUBLIC '-//W3C//DTD HTML 4.01//EN'\n'http://www.w3.org/TR/html4/strict.dtd'>";
@@ -22,20 +20,20 @@ public class HtmlGeneratorImpl implements HtmlGenerator {
 	private String areas = "";
 
 	@Override
-	public String generateHTMLCode(File image, List<GraphObject> paintlist) {
+	public String generateHTMLCode(File image, List<GraphObject> paintlist, List<String[]> attrList) {
 		// TODO Auto-generated method stub
 		BufferedImage realImage = null;
+		int i = 0;
 		try {
 			realImage = ImageIO.read(image);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		String img = "\n<img src='" + image.getAbsolutePath() + "' width='"
-				+ realImage.getWidth() + "' height='"
-				+ realImage.getHeight()
-				+ "' border='0' alt='Karte' usemap='#imgmap'>";
+				+ realImage.getWidth() + "' height='" + realImage.getHeight()
+				+ "' alt='Karte' usemap='#imgmap'/>";
 
 		String mapTag = null;
 
@@ -56,9 +54,10 @@ public class HtmlGeneratorImpl implements HtmlGenerator {
 					+ gObj.getCoords()[2]
 					+ " , "
 					+ gObj.getCoords()[3]
-					+ "' href='http://somelink.somewhere' alt='some Alt' title = 'some Title' />";
+					+ "' href='" + attrList.get(i)[0] + "' alt='" + attrList.get(i)[1] + "' title = '" + attrList.get(i)[2] + "' />";
 
 			areas += temp;
+			i++;
 		}
 
 		mapTag = "\n<map name='imgmap'>" + areas + "\n</map>\n";

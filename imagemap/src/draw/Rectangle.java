@@ -43,40 +43,43 @@ public class Rectangle implements GraphObject, Serializable {
 		// TODO Auto-generated method stub
 		this.ey = ey;
 	}
-	
+
 	@Override
 	public void paint(Graphics2D g2, boolean tmp) {
 		// TODO Auto-generated method stub
-		int diffX = sx-ex;
-		int diffY = sy-ey;
+		int diffX = sx - ex;
+		int diffY = sy - ey;
 		int tempx = ex;
 		int tempy = ey;
-		if (tmp == false){
-			//float[] dash = { 10, 2 };
-			g2.setStroke(new BasicStroke( 1,
-					  BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER,
-					  10.0f, new float[]{ 8.0f,6.0f }, 0.0f ));
+		if (tmp == false) {
+			// float[] dash = { 10, 2 };
+			g2.setStroke(new BasicStroke(1, BasicStroke.CAP_SQUARE,
+					BasicStroke.JOIN_MITER, 10.0f, new float[] { 8.0f, 6.0f },
+					0.0f));
 			if (diffX < 0 && diffY < 0) {
 				ex = sx;
 				ey = sy;
 			}
-			g2.drawRect(sx - Math.abs(sx-ex), sy - Math.abs(sy-ey), Math.abs(diffX), Math.abs(diffY));
-		}else{
+			g2.drawRect(sx - Math.abs(sx - ex), sy - Math.abs(sy - ey),
+					Math.abs(diffX), Math.abs(diffY));
+		} else {
 			if (diffX < 0 && diffY < 0) {
 				ex = sx;
 				ey = sy;
-			} 
+			}
 			g2.setStroke(new BasicStroke(strokeThickness));
 			g2.setColor(strokeColor);
-			g2.drawRect(sx - Math.abs(sx-ex), sy - Math.abs(sy-ey), Math.abs(diffX), Math.abs(diffY));
+			g2.drawRect(sx - Math.abs(sx - ex), sy - Math.abs(sy - ey),
+					Math.abs(diffX), Math.abs(diffY));
 			g2.setColor(fillColor);
-			g2.fillRect(sx - Math.abs(sx-ex), sy - Math.abs(sy-ey), Math.abs(diffX), Math.abs(diffY));
-			
+			g2.fillRect(sx - Math.abs(sx - ex), sy - Math.abs(sy - ey),
+					Math.abs(diffX), Math.abs(diffY));
+
 			ex = tempx;
 			ey = tempy;
-			
+
 		}
-		
+
 	}
 
 	@Override

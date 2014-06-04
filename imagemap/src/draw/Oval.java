@@ -42,26 +42,26 @@ public class Oval implements GraphObject, Serializable {
 		// TODO Auto-generated method stub
 		this.ey = ey;
 	}
-	
+
 	@Override
 	public void paint(Graphics2D g2, boolean tmp) {
 		// TODO Auto-generated method stub
-		
-		if (tmp == false){
-			//float[] dash = { 10, 2 };
-			g2.setStroke(new BasicStroke( 1,
-					  BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER,
-					  10.0f, new float[]{ 8.0f,6.0f }, 0.0f ));
-			g2.drawOval(sx, sy, Math.abs(sx-ex), Math.abs(sy-ey));
-			g2.drawRect(sx, sy, Math.abs(sx-ex), Math.abs(sy-ey));
-		}else{
+
+		if (tmp == false) {
+			// float[] dash = { 10, 2 };
+			g2.setStroke(new BasicStroke(1, BasicStroke.CAP_SQUARE,
+					BasicStroke.JOIN_MITER, 10.0f, new float[] { 8.0f, 6.0f },
+					0.0f));
+			g2.drawOval(sx, sy, Math.abs(sx - ex), Math.abs(sy - ey));
+			g2.drawRect(sx, sy, Math.abs(sx - ex), Math.abs(sy - ey));
+		} else {
 			g2.setStroke(new BasicStroke(strokeThickness));
 			g2.setColor(strokeColor);
-			g2.drawOval(sx, sy, Math.abs(sx-ex), Math.abs(sy-ey));
+			g2.drawOval(sx, sy, Math.abs(sx - ex), Math.abs(sy - ey));
 			g2.setColor(fillColor);
-			g2.fillOval(sx, sy, Math.abs(sx-ex), Math.abs(sy-ey));
+			g2.fillOval(sx, sy, Math.abs(sx - ex), Math.abs(sy - ey));
 		}
-		//g2.drawOval(sx, sy, Math.abs(sx-ex), Math.abs(sy-ey));
+		// g2.drawOval(sx, sy, Math.abs(sx-ex), Math.abs(sy-ey));
 	}
 
 	@Override

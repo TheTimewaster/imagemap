@@ -1,6 +1,5 @@
 package ui;
 
-
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -30,13 +29,12 @@ import draw.Oval;
 import draw.Poly;
 import draw.Rectangle;
 
-
 public class PaintPanel extends JPanel {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 6315814006322347966L;
-	ArrayList<GraphObject> paintList = new ArrayList<GraphObject>();
+	private ArrayList<GraphObject> paintList = new ArrayList<GraphObject>();
 	GraphObject currentObject;
 	SelectedItem sItem = SelectedItem.rect;
 	private Color fc;
@@ -47,28 +45,28 @@ public class PaintPanel extends JPanel {
 	private BufferedImage bImage;
 	boolean drawpoly = false;
 	final MainFrame mainFrame;
-	
+
 	public PaintPanel(MainFrame mf) {
 		super();
 		this.mainFrame = mf;
 		this.addMouseListener(new MouseAdapter() {
-					
+
 			public void mousePressed(MouseEvent e) {
-				if(sItem == SelectedItem.rect){
+				if (sItem == SelectedItem.rect) {
 					currentObject = new Rectangle();
-				}else{
-					if(sItem == SelectedItem.oval){
+				} else {
+					if (sItem == SelectedItem.oval) {
 						currentObject = new Oval();
-					}else{
-						if(drawpoly == false){
+					} else {
+						if (drawpoly == false) {
 							drawpoly = true;
 							currentObject.setEndX(e.getX());
 							currentObject.setEndY(e.getY());
 							((Poly) currentObject).addCoords();
-							
+
 							currentObject.setStroke(str);
-							
-							if(SwingUtilities.isRightMouseButton(e)){
+
+							if (SwingUtilities.isRightMouseButton(e)) {
 								repaint();
 								paintList.add(currentObject);
 								currentObject = null;
@@ -77,8 +75,8 @@ public class PaintPanel extends JPanel {
 						}
 					}
 				}
-				if(sItem == SelectedItem.rect || sItem == SelectedItem.oval){
-				//currentObject = new Line();
+				if (sItem == SelectedItem.rect || sItem == SelectedItem.oval) {
+					// currentObject = new Line();
 					currentObject.setStartX(e.getX());
 					currentObject.setStartY(e.getY());
 					currentObject.setStroke(str);
@@ -86,27 +84,27 @@ public class PaintPanel extends JPanel {
 			}
 
 			public void mouseReleased(MouseEvent e) {
-				if(sItem == SelectedItem.rect || sItem == SelectedItem.oval){
+				if (sItem == SelectedItem.rect || sItem == SelectedItem.oval) {
 					currentObject.setEndX(e.getX());
 					currentObject.setEndY(e.getY());
 					repaint();
 					paintList.add(currentObject);
-					currentObject = null;	
+					currentObject = null;
 				}
 				mainFrame.itemDrawn(sItem);
 			}
 		});
-	
+
 		this.addMouseMotionListener(new MouseMotionAdapter() {
 			public void mouseDragged(MouseEvent e) {
-				if(sItem == SelectedItem.rect || sItem == SelectedItem.oval){
+				if (sItem == SelectedItem.rect || sItem == SelectedItem.oval) {
 					currentObject.setEndX(e.getX());
 					currentObject.setEndY(e.getY());
 					repaint();
 				}
 			}
 		});
-		
+
 	}
 
 	public void paintComponent(Graphics g) {
@@ -119,12 +117,12 @@ public class PaintPanel extends JPanel {
 			currentObject.setStrokeColor(sc);
 			currentObject.setStroke(str);
 		}
-		for(GraphObject gObject : paintList){
+		for (GraphObject gObject : paintList) {
 			gObject.paint(g2D, true);
 		}
 	}
-	
-	public void openImage(){
+
+	public void openImage() {
 		try {
 			bImage = ImageIO.read(fImage);
 		} catch (IOException e) {
@@ -133,44 +131,19 @@ public class PaintPanel extends JPanel {
 		}
 	}
 
-	public void saveFile(){
+	public void saveFile() {
 		FileOutputStream fOutStream;
 		BufferedOutputStream bOutStream;
 		ObjectOutputStream objOutStream;
-			try {
-				fOutStream = new FileOutputStream(file);
-				bOutStream = new BufferedOutputStream(fOutStream);
-				
-				try {
-					objOutStream = new ObjectOutputStream(bOutStream);
-					
-					objOutStream.writeObject(paintList);
-					objOutStream.close();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-	}
-	
-	public void openFile() throws ClassNotFoundException{
-		FileInputStream fInStream;
-		BufferedInputStream bInStream;
-		ObjectInputStream objInStream;
 		try {
-			fInStream = new FileInputStream(file);
-			bInStream = new BufferedInputStream(fInStream);
-			
+			fOutStream = new FileOutputStream(file);
+			bOutStream = new BufferedOutputStream(fOutStream);
+
 			try {
-				objInStream = new ObjectInputStream(bInStream);
-				
-				paintList = (ArrayList<GraphObject>) objInStream.readObject();
-				objInStream.close();
-				repaint();
-				
+				objOutStream = new ObjectOutputStream(bOutStream);
+
+				objOutStream.writeObject(paintList);
+				objOutStream.close();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -179,7 +152,37 @@ public class PaintPanel extends JPanel {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+	}
+
+	public void openFile() throws ClassNotFoundException {
+		FileInputStream fInStream;
+		BufferedInputStream bInStream;
+		ObjectInputStream objInStream;
+		try {
+			fInStream = new FileInputStream(file);
+			bInStream = new BufferedInputStream(fInStream);
+
+			try {
+				objInStream = new ObjectInputStream(bInStream);
+
+				paintList = (ArrayList<GraphObject>) objInStream.readObject();
+				objInStream.close();
+				repaint();
+
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+	
+	public void emptyList(){
+		paintList.clear();
+		repaint();
 	}
 
 	public SelectedItem getsItem() {
@@ -189,16 +192,20 @@ public class PaintPanel extends JPanel {
 	public void setsItem(SelectedItem sItem) {
 		this.sItem = sItem;
 	}
+	
+	public ArrayList<GraphObject> getPaintList(){
+		return paintList;
+	}
 
 	public void setColor1(Color c) {
 		this.fc = c;
 	}
-	
-	public void setColor2(Color c){
+
+	public void setColor2(Color c) {
 		this.sc = c;
 	}
 
-	public void setStroke(int s){
+	public void setStroke(int s) {
 		this.str = s;
 	}
 
@@ -209,9 +216,9 @@ public class PaintPanel extends JPanel {
 	public void setFile(File file) {
 		this.file = file;
 	}
-	
-	public void setImage(File img){
+
+	public void setImage(File img) {
 		this.fImage = img;
 	}
-	
+
 }
