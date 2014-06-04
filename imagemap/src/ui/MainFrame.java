@@ -59,11 +59,11 @@ public class MainFrame extends JFrame implements ActionListener, ChangeListener 
 	DefaultTableModel model = new DefaultTableModel(5, columns.length);
 	public JTable table = new JTable();
 	
-	private String selectedItem;
+	private SelectedItem selectedItem;
 	private File img;
 
 	JPanel cp;
-	PaintPanel pPanel = new PaintPanel();
+	PaintPanel pPanel = new PaintPanel(this);
 	JScrollPane tFScrollpane = new JScrollPane(tArea);
 	JScrollPane tBScrollPane = new JScrollPane(table);
 	
@@ -240,8 +240,11 @@ public class MainFrame extends JFrame implements ActionListener, ChangeListener 
 		pPanel.setStroke(s);
 	}
 	
-	public String getSelectedItem(){
-		return selectedItem;
+	public void itemDrawn(SelectedItem item){
+		selectedItem = item;
+		if(selectedItem == SelectedItem.rect){
+			model.addRow(new Object[]{"Rectangle"});
+		}
 	}
 
 }

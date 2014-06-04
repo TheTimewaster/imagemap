@@ -46,11 +46,13 @@ public class PaintPanel extends JPanel {
 	private File fImage;
 	private BufferedImage bImage;
 	boolean drawpoly = false;
+	final MainFrame mainFrame;
 	
-	public PaintPanel() {
+	public PaintPanel(MainFrame mf) {
 		super();
+		this.mainFrame = mf;
 		this.addMouseListener(new MouseAdapter() {
-			
+					
 			public void mousePressed(MouseEvent e) {
 				if(sItem == SelectedItem.rect){
 					currentObject = new Rectangle();
@@ -89,9 +91,9 @@ public class PaintPanel extends JPanel {
 					currentObject.setEndY(e.getY());
 					repaint();
 					paintList.add(currentObject);
-					currentObject = null;
-					
+					currentObject = null;	
 				}
+				mainFrame.itemDrawn(sItem);
 			}
 		});
 	
