@@ -52,7 +52,6 @@ public class PaintPanel extends JPanel {
 		this.addMouseListener(new MouseAdapter() {
 			
 			public void mousePressed(MouseEvent e) {
-				
 				if(sItem == SelectedItem.rect){
 					currentObject = new Rectangle();
 				}else{
@@ -91,6 +90,7 @@ public class PaintPanel extends JPanel {
 					repaint();
 					paintList.add(currentObject);
 					currentObject = null;
+					
 				}
 			}
 		});

@@ -16,6 +16,7 @@ import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.table.DefaultTableModel;
 
 public class MainFrame extends JFrame implements ActionListener, ChangeListener {
 	/**
@@ -53,19 +54,18 @@ public class MainFrame extends JFrame implements ActionListener, ChangeListener 
 	JTextArea tArea = new JTextArea(5,5);
 	//Generate Button
 	JButton generateButton = new JButton("Generate");
-	//List
-	String[] values = {"Value1", "Value2", "Value3", "Value4"};
-	JList<String> shapesList = new JList<String>(values);
+	//Table
+	String[] columns = {"Shape", "Dimensions" , "href", "alt"};
+	DefaultTableModel model = new DefaultTableModel(5, columns.length);
+	public JTable table = new JTable();
 	
 	private String selectedItem;
 	private File img;
 
 	JPanel cp;
 	PaintPanel pPanel = new PaintPanel();
-	JScrollPane scrollpane = new JScrollPane(tArea);
-	JPanel ePanel = new JPanel();
-	
-	
+	JScrollPane tFScrollpane = new JScrollPane(tArea);
+	JScrollPane tBScrollPane = new JScrollPane(table);
 	
 	public MainFrame() {
 		initMenu();
@@ -76,13 +76,8 @@ public class MainFrame extends JFrame implements ActionListener, ChangeListener 
 		cp.setLayout(new BorderLayout());
 		pPanel.setBackground(Color.white);
 		cp.add(pPanel, BorderLayout.CENTER);
-		cp.add(scrollpane, BorderLayout.PAGE_END);
-		cp.add(ePanel, BorderLayout.EAST);
-		
-		shapesList.setSize(300, 600);
-		ePanel.setPreferredSize(new Dimension(400,50));
-		ePanel.add(shapesList);
-		ePanel.add(new JLabel("Something"));
+		cp.add(tFScrollpane, BorderLayout.PAGE_END);
+		cp.add(tBScrollPane, BorderLayout.EAST);
 	}
 
 	private void registerListener() {
@@ -143,6 +138,10 @@ public class MainFrame extends JFrame implements ActionListener, ChangeListener 
 		pPanel.setColor2(Color.BLACK);
 		pPanel.setStroke(5);
 		//fChooser.setFileFilter(new FileNameExtensionFilter("*.shapes"));
+		
+		model.setColumnIdentifiers(columns);
+		table.setModel(model);
+		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 	}
 
 	@Override
@@ -244,4 +243,5 @@ public class MainFrame extends JFrame implements ActionListener, ChangeListener 
 	public String getSelectedItem(){
 		return selectedItem;
 	}
+
 }
