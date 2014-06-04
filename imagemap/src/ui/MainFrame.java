@@ -56,7 +56,7 @@ public class MainFrame extends JFrame implements ActionListener, ChangeListener 
 	JButton generateButton = new JButton("Generate");
 	//Table
 	String[] columns = {"Shape", "Dimensions" , "href", "alt"};
-	DefaultTableModel model = new DefaultTableModel(5, columns.length);
+	DefaultTableModel model = new DefaultTableModel(0, columns.length);
 	public JTable table = new JTable();
 	
 	private SelectedItem selectedItem;
@@ -242,8 +242,20 @@ public class MainFrame extends JFrame implements ActionListener, ChangeListener 
 	
 	public void itemDrawn(SelectedItem item){
 		selectedItem = item;
+		String dimString = "";
+		int[] coords = pPanel.paintList.get(pPanel.paintList.size()-1).getCoords();
+		for(int i = 0; i < coords.length; i++ ){
+			dimString += coords[i];
+			if(i < coords.length-1){
+				dimString += " ,";
+			}
+		}
 		if(selectedItem == SelectedItem.rect){
-			model.addRow(new Object[]{"Rectangle"});
+			model.addRow(new Object[]{"Rectangle", dimString});
+		}else{
+			if(selectedItem == SelectedItem.oval){
+				model.addRow(new Object[]{"Oval",dimString});
+			}
 		}
 	}
 

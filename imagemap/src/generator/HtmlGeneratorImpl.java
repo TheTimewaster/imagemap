@@ -19,7 +19,7 @@ public class HtmlGeneratorImpl implements HtmlGenerator {
 	private final String htmlHeader = "<!DOCTYPE HTML PUBLIC '-//W3C//DTD HTML 4.01//EN'\n'http://www.w3.org/TR/html4/strict.dtd'>";
 	private final String htmlTag = "\n<html>\n<head>\n<meta http-equiv='content-type' content='text/html; charset=ISO-8859-1'>\n<title>Verweis-sensitive Grafiken definieren - map, area, usemap</title>\n</head>\n<body>";
 	private final String header = "\n<h1>ImageMap</h1>";
-	private String areas = null;
+	private String areas = "";
 
 	@Override
 	public String generateHTMLCode(File image, List<GraphObject> paintlist) {
