@@ -33,7 +33,7 @@ public class HtmlGeneratorImpl implements HtmlGenerator {
 			e.printStackTrace();
 		}
 
-		String img = "\n<img src='" + image.getAbsolutePath() + "' width='"
+		String img = "\n<img src='" + image.getName() + "' width='"
 				+ realImage.getWidth() + "' height='" + realImage.getHeight()
 				+ "' alt='Karte' usemap='#imgmap'/>";
 

@@ -102,7 +102,8 @@ public class MainFrame extends JFrame implements ActionListener {
 			bg.add(pItem[i]);
 		}
 
-		pItem[2].setSelected(true);
+		pItem[1].setSelected(true);
+		pPanel.setsItem(SelectedItem.oval);
 
 		bar.add(helpMenu);
 
@@ -165,6 +166,7 @@ public class MainFrame extends JFrame implements ActionListener {
 		case "Reset":
 			pPanel.emptyList();
 			model.setRowCount(0);
+			tArea.setText("");
 			break;
 
 		case "Generate":
@@ -207,14 +209,17 @@ public class MainFrame extends JFrame implements ActionListener {
 
 		if (pItem[0].isSelected()) {
 			pPanel.setsItem(SelectedItem.rect);
+			pPanel.paintElement();
 		}
 
 		if (pItem[1].isSelected()) {
 			pPanel.setsItem(SelectedItem.oval);
+			pPanel.paintElement();
 		}
 
 		if (pItem[2].isSelected()) {
 			pPanel.setsItem(SelectedItem.polygon);
+			pPanel.paintElement();
 		}
 
 	}

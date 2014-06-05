@@ -42,67 +42,82 @@ public class PaintPanel extends JPanel {
 	private File file;
 	private File fImage;
 	private BufferedImage bImage;
-	boolean drawpoly = false;
+	boolean drawingPoly = false;
 	final MainFrame mainFrame;
 
 	public PaintPanel(MainFrame mf) {
 		super();
 		this.mainFrame = mf;
-		this.addMouseListener(new MouseAdapter() {
-
-			public void mousePressed(MouseEvent e) {
-				if (sItem == SelectedItem.rect) {
-					currentObject = new Rectangle();
-				} else {
-					if (sItem == SelectedItem.oval) {
+	}
+	
+	public void paintElement(){
+		
+		if(sItem == SelectedItem.oval || sItem == SelectedItem.rect){
+			this.addMouseListener(new MouseAdapter() {
+	
+				public void mousePressed(MouseEvent e) {
+					switch(sItem){
+					case rect:
+						currentObject = new Rectangle();
+						break;
+					case oval:
 						currentObject = new Oval();
-					} else {
-						if (drawpoly == false) {
-							drawpoly = true;
-							currentObject.setEndX(e.getX());
-							currentObject.setEndY(e.getY());
-							((Poly) currentObject).addCoords();
-
-							if (SwingUtilities.isRightMouseButton(e)) {
-								repaint();
-								paintList.add(currentObject);
-								currentObject = null;
-								drawpoly = false;
-							}
-						}
+						break;
 					}
-				}
-				if (sItem == SelectedItem.rect || sItem == SelectedItem.oval) {
-					// currentObject = new Line();
+					
 					currentObject.setStartX(e.getX());
 					currentObject.setStartY(e.getY());
+	
 				}
-			}
-
-			public void mouseReleased(MouseEvent e) {
-				if (sItem == SelectedItem.rect || sItem == SelectedItem.oval) {
-					currentObject.setEndX(e.getX());
-					currentObject.setEndY(e.getY());
-					repaint();
-					paintList.add(currentObject);
-					currentObject = null;
+	
+				public void mouseReleased(MouseEvent e) {
+						currentObject.setEndX(e.getX());
+						currentObject.setEndY(e.getY());
+						repaint();
+							paintList.add(currentObject);
+							currentObject = null;
+							mainFrame.itemDrawn(sItem);		
 				}
-				mainFrame.itemDrawn(sItem);
-			}
-		});
-
-		this.addMouseMotionListener(new MouseMotionAdapter() {
-			public void mouseDragged(MouseEvent e) {
-				if (sItem == SelectedItem.rect || sItem == SelectedItem.oval) {
-					currentObject.setEndX(e.getX());
-					currentObject.setEndY(e.getY());
-					repaint();
+			});
+	
+			this.addMouseMotionListener(new MouseMotionAdapter() {
+				public void mouseDragged(MouseEvent e) {
+						currentObject.setEndX(e.getX());
+						currentObject.setEndY(e.getY());
+						repaint();
 				}
-			}
-		});
+			});
+			
+		}else{
+			this.addMouseListener(new MouseAdapter() {
 
+				public void mouseClicked(MouseEvent e){
+					if(drawingPoly == false){
+						currentObject = new Poly();
+					}
+					if(e.getButton() == 1){
+						currentObject.setEndX(e.getX());
+						currentObject.setEndY(e.getY());
+					}else{
+						repaint();
+						paintList.add(currentObject);
+						currentObject = null;
+						mainFrame.itemDrawn(sItem);	
+					}
+				}
+				
+			});
+			
+			this.addMouseMotionListener(new MouseAdapter() {
+				
+				public void mouseMoved(MouseEvent e) {
+					
+				}
+			});
+		}
+		
 	}
-
+	
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		g.drawImage(bImage, 0, 0, null);
@@ -177,10 +192,6 @@ public class PaintPanel extends JPanel {
 	public void emptyList() {
 		paintList.clear();
 		repaint();
-	}
-
-	public SelectedItem getsItem() {
-		return sItem;
 	}
 
 	public void setsItem(SelectedItem sItem) {
