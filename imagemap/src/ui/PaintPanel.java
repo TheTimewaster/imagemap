@@ -38,7 +38,7 @@ public class PaintPanel extends JPanel {
 	private static final long serialVersionUID = 6315814006322347966L;
 	private ArrayList<GraphObject> paintList = new ArrayList<GraphObject>();
 	GraphObject currentObject;
-	SelectedItem sItem = SelectedItem.rect;
+	SelectedItem sItem;
 	private File file;
 	private File fImage;
 	private BufferedImage bImage;
@@ -47,75 +47,75 @@ public class PaintPanel extends JPanel {
 
 	public PaintPanel(MainFrame mf) {
 		super();
+		sItem = SelectedItem.oval;
 		this.mainFrame = mf;
+		
 	}
 	
 	public void paintElement(){
-		
-		if(sItem == SelectedItem.oval || sItem == SelectedItem.rect){
-			this.addMouseListener(new MouseAdapter() {
-	
-				public void mousePressed(MouseEvent e) {
-					switch(sItem){
-					case rect:
-						currentObject = new Rectangle();
-						break;
-					case oval:
-						currentObject = new Oval();
-						break;
-					}
-					
-					currentObject.setStartX(e.getX());
-					currentObject.setStartY(e.getY());
-	
-				}
-	
-				public void mouseReleased(MouseEvent e) {
-						currentObject.setEndX(e.getX());
-						currentObject.setEndY(e.getY());
-						repaint();
-							paintList.add(currentObject);
-							currentObject = null;
-							mainFrame.itemDrawn(sItem);		
-				}
-			});
-	
-			this.addMouseMotionListener(new MouseMotionAdapter() {
-				public void mouseDragged(MouseEvent e) {
-						currentObject.setEndX(e.getX());
-						currentObject.setEndY(e.getY());
-						repaint();
-				}
-			});
-			
-		}else{
-			this.addMouseListener(new MouseAdapter() {
+		this.addMouseListener(new MouseAdapter() {
 
-				public void mouseClicked(MouseEvent e){
-					if(drawingPoly == false){
-						currentObject = new Poly();
-					}
-					if(e.getButton() == 1){
-						currentObject.setEndX(e.getX());
-						currentObject.setEndY(e.getY());
-					}else{
-						repaint();
-						paintList.add(currentObject);
-						currentObject = null;
-						mainFrame.itemDrawn(sItem);	
-					}
+			public void mousePressed(MouseEvent e) {
+				switch(sItem){
+				case rect:
+					currentObject = new Rectangle();
+					break;
+				case oval:
+					currentObject = new Oval();
+					break;
+				case polygon:
+					drawPolygon(e);
+					return;
 				}
 				
-			});
-			
-			this.addMouseMotionListener(new MouseAdapter() {
-				
-				public void mouseMoved(MouseEvent e) {
+				currentObject.setStartX(e.getX());
+				currentObject.setStartY(e.getY());
+
+			}
+
+			public void mouseReleased(MouseEvent e) {
+				if(sItem == SelectedItem.oval || sItem == SelectedItem.rect){
+					currentObject.setEndX(e.getX());
+					currentObject.setEndY(e.getY());
+					repaint();
+					paintList.add(currentObject);
+					currentObject = null;
+					mainFrame.itemDrawn(sItem);
+				}
+			}
+		});
+
+		this.addMouseMotionListener(new MouseMotionAdapter() {
+			public void mouseDragged(MouseEvent e) {
+				if(sItem == SelectedItem.oval || sItem == SelectedItem.rect){
+					currentObject.setEndX(e.getX());
+					currentObject.setEndY(e.getY());
+					repaint();
+				}
+			}
+		});
 					
+	}
+	
+	public void drawPolygon(MouseEvent e){			
+			if(e.getButton() == 1){
+				if(drawingPoly == false){
+					currentObject = new Poly();
+					drawingPoly = true;
+				}else{
+					currentObject.setEndX(e.getX());
+					currentObject.setEndY(e.getY());
+					((Poly) currentObject).setDot();
+					repaint();
 				}
-			});
-		}
-		
+									
+			}else{
+				repaint();
+				paintList.add(currentObject);
+				currentObject = null;
+				drawingPoly = false;
+				mainFrame.itemDrawn(sItem);
+			}
 	}
 	
 	public void paintComponent(Graphics g) {

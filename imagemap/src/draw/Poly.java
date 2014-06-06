@@ -25,36 +25,30 @@ public class Poly implements GraphObject, Serializable {
 	private int[] yCoords;
 	ArrayList<Integer> coordYList;
 	ArrayList<Integer> coordXList;
+	
+	public Poly(){
+		coordYList = new ArrayList<Integer>();
+		coordXList = new ArrayList<Integer>();
+	}
 
 	@Override
 	public void paint(Graphics2D g2, boolean tmp) {
-		coordYList = new ArrayList<Integer>();
-		coordXList = new ArrayList<Integer>();
+		
 		// TODO Auto-generated method stub
-		if (tmp == false) {
-			boolean initPoly = true;
-			
-			g2.setStroke(new BasicStroke(1, BasicStroke.CAP_SQUARE,
-					BasicStroke.JOIN_MITER, 10.0f, new float[] { 8.0f, 6.0f },
-					0.0f));
-			if(initPoly){
-				g2.drawLine(firstX, firstY, newX, newY);
-				initPoly = false;
-				coordXList.add(firstX);
-				coordYList.add(firstY);
+		if (tmp == false) {		
+			g2.setStroke(new BasicStroke(strokeThickness));
+			if(coordXList.size() < 2){
+				g2.drawLine(coordXList.get(0), coordYList.get(0), coordXList.get(0), coordYList.get(0));
 			}else{
-				g2.drawLine(lastX, lastY, newX, newY);
-				g2.drawLine(newX, newY, firstX, firstY);
+				for(int i = 0 ; i < coordXList.size()-1 ; i++ ){
+					g2.drawLine(coordXList.get(i), coordYList.get(i), coordXList.get(i+1), coordYList.get(i+1));
+					g2.drawPolygon(integerListtoArray(coordXList), integerListtoArray(coordYList), coordXList.size());
+				}
 			}
 			
-			coordXList.add(newX);
-			coordYList.add(newY);
-			lastX = newX;
-			lastY = newY;
-			
-			g2.drawPolygon(integerListtoArray(coordXList), integerListtoArray(coordYList), coordXList.size());
 		} else {
 			g2.setStroke(new BasicStroke(strokeThickness));
+			g2.drawPolygon(integerListtoArray(coordXList), integerListtoArray(coordYList), coordXList.size());
 		}
 	}
 
@@ -74,18 +68,26 @@ public class Poly implements GraphObject, Serializable {
 	public void setEndX(int ex) {
 		// TODO Auto-generated method stub
 		this.newX = ex;
+		
 	}
 
 	@Override
 	public void setEndY(int ey) {
 		// TODO Auto-generated method stub
 		this.newY = ey;
+		
 	}
 
 	@Override
 	public int[] getCoords() {
 		// TODO Auto-generated method stub
-		return null;
+		int[] coords = new int[coordXList.size() + coordYList.size()];
+		for(int i = 0 ; i < coordXList.size() ; i++){
+			coords[2*i] = coordXList.get(i);
+			coords[2*i + 1] = coordYList.get(i);
+		}
+		
+		return coords;
 	}
 	
 	public int[] integerListtoArray(ArrayList<Integer> list){
@@ -97,5 +99,10 @@ public class Poly implements GraphObject, Serializable {
 		}
 		return coords;
 	}
-
+	
+	public void setDot(){
+		this.coordXList.add(newX);
+		this.coordYList.add(newY);
+	}
+	
 }

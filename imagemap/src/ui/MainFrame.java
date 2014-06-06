@@ -2,7 +2,7 @@ package ui;
 
 
 import generator.HtmlGenerator;
-import generator.HtmlGeneratorImpl;
+import generator.HtmlGenerator;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -118,6 +118,8 @@ public class MainFrame extends JFrame implements ActionListener {
 		FileFilter filter = new FileNameExtensionFilter("Bilder", "gif", "png",
 				"jpg");
 		fChooser.addChoosableFileFilter(filter);
+		
+		pPanel.paintElement();
 	}
 
 	@Override
@@ -170,7 +172,7 @@ public class MainFrame extends JFrame implements ActionListener {
 			break;
 
 		case "Generate":
-			HtmlGenerator generator = new HtmlGeneratorImpl();
+			HtmlGenerator generator = new HtmlGenerator();
 
 			ArrayList<String[]> attrList = new ArrayList<String[]>();
 
@@ -208,18 +210,15 @@ public class MainFrame extends JFrame implements ActionListener {
 		}
 
 		if (pItem[0].isSelected()) {
-			pPanel.setsItem(SelectedItem.rect);
-			pPanel.paintElement();
-		}
-
-		if (pItem[1].isSelected()) {
-			pPanel.setsItem(SelectedItem.oval);
-			pPanel.paintElement();
-		}
-
-		if (pItem[2].isSelected()) {
-			pPanel.setsItem(SelectedItem.polygon);
-			pPanel.paintElement();
+			pPanel.setsItem(SelectedItem.rect);			
+		}else{
+			if (pItem[1].isSelected()) {
+				pPanel.setsItem(SelectedItem.oval);
+			}else{
+				if (pItem[2].isSelected()) {
+					pPanel.setsItem(SelectedItem.polygon);
+				}
+			}			
 		}
 
 	}
@@ -235,14 +234,19 @@ public class MainFrame extends JFrame implements ActionListener {
 				dimString += " ,";
 			}
 		}
-		if (selectedItem == SelectedItem.rect) {
+		
+		switch(selectedItem){
+		case oval:
+			model.addRow(new Object[] { "Oval", dimString, "", "", "",
+			"Delete" });
+			break;
+		case rect:
 			model.addRow(new Object[] { "Rectangle", dimString, "", "", "",
-					"Delete" });
-		} else {
-			if (selectedItem == SelectedItem.oval) {
-				model.addRow(new Object[] { "Oval", dimString, "", "", "",
-						"Delete" });
-			}
+			"Delete" });
+			break;
+		case polygon:
+			model.addRow(new Object[] { "Polygon", dimString, "", "", "",
+			"Delete" });
 		}
 	}
 
