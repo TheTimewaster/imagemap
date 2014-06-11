@@ -3,7 +3,6 @@ package ui;
 
 import generator.GeneratorElement;
 import generator.HtmlGenerator;
-import generator.HtmlGenerator;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -175,47 +174,23 @@ public class MainFrame extends JFrame implements ActionListener {
 		case "Generate":
 			HtmlGenerator generator = new HtmlGenerator();
 
-			ArrayList<String[]> attrList = new ArrayList<String[]>();
 			ArrayList<GeneratorElement> gElementList = new ArrayList<GeneratorElement>();
 
 			for (int count = 0; count < model.getRowCount(); count++) {
 				GeneratorElement gElement = new GeneratorElement(pPanel
 						.getPaintList().get(count), pPanel.getPaintList()
-						.get(count).getCoords(), model.getValueAt(count, 2).toString(),
-						model.getValueAt(count, 3).toString(), model.getValueAt(count, 4).toString());
+						.get(count).getCoords(), model.getValueAt(count, 2)
+						.toString(), model.getValueAt(count, 3).toString(),
+						model.getValueAt(count, 4).toString());
 				gElementList.add(gElement);
 			}
-
-//			for (int count = 0; count < model.getRowCount(); count++) {
-//				String[] dataRow = new String[3];
-//				if (model.getValueAt(count, 2) == null) {
-//					dataRow[0] = "#";
-//				} else {
-//					dataRow[0] = model.getValueAt(count, 2).toString();
-//				}
-//
-//				if (model.getValueAt(count, 3) == null) {
-//					dataRow[1] = "";
-//				} else {
-//					dataRow[1] = model.getValueAt(count, 3).toString();
-//				}
-//
-//				if (model.getValueAt(count, 4) == null) {
-//					dataRow[2] = "";
-//				} else {
-//					dataRow[2] = model.getValueAt(count, 4).toString();
-//				}
-//
-//				attrList.add(dataRow);
-//			}
 
 			if (img == null) {
 				JOptionPane.showMessageDialog(this,
 						"No image loaded! Cannot generate imagemap!",
 						"No Image", JOptionPane.ERROR_MESSAGE);
 			} else {
-				tArea.setText(generator.generateHTMLCode(img,
-						gElementList));
+				tArea.setText(generator.generateHTMLCode(img, gElementList));
 			}
 		}
 

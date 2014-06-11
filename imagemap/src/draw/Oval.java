@@ -64,10 +64,10 @@ public class Oval implements GraphObject, Serializable {
 	public ArrayList<Integer> getCoords() {
 		ArrayList<Integer> coords = new ArrayList<Integer>();
 		// TODO Auto-generated method stub
-			coords.add(sx);
-			coords.add(sy);
-			coords.add(ex);
-			coords.add(ey);
+		coords.add(sx);
+		coords.add(sy);
+		coords.add(ex);
+		coords.add(ey);
 		return coords;
 	}
 

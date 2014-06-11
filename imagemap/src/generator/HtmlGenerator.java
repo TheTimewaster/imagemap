@@ -8,11 +8,6 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 
-import draw.GraphObject;
-import draw.Oval;
-import draw.Poly;
-import draw.Rectangle;
-
 
 public class HtmlGenerator {
 
@@ -21,10 +16,10 @@ public class HtmlGenerator {
 	private final String header = "\n<h1>ImageMap</h1>";
 	private String areas = "";
 
-	public String generateHTMLCode(File image, List<GeneratorElement> gElementList) {
+	public String generateHTMLCode(File image,
+			List<GeneratorElement> gElementList) {
 		// TODO Auto-generated method stub
 		BufferedImage realImage = null;
-		int i = 0;
 		try {
 			realImage = ImageIO.read(image);
 		} catch (IOException e) {
@@ -40,11 +35,12 @@ public class HtmlGenerator {
 
 		for (GeneratorElement gElem : gElementList) {
 			String temp = "";
-			
-			temp = "\n<area shape = '" + gElem.printGObject() + "' coords='" + gElem.printCoords() + "' href='" + gElem.printhref() + "' alt='"
-					+ gElem.printalt() + "' title = '" + gElem.printtitle()
-					+ "' />";;			
-			
+
+			temp = "\n<area shape = '" + gElem.printGObject() + "' coords='"
+					+ gElem.printCoords() + "' href='" + gElem.printhref()
+					+ "' alt='" + gElem.printalt() + "' title = '"
+					+ gElem.printtitle() + "' />";;
+
 			areas += temp;
 		}
 

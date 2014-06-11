@@ -1,11 +1,8 @@
 package ui;
 
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.Stroke;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
@@ -23,7 +20,6 @@ import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 
 import draw.GraphObject;
 import draw.Oval;
@@ -49,14 +45,14 @@ public class PaintPanel extends JPanel {
 		super();
 		sItem = SelectedItem.oval;
 		this.mainFrame = mf;
-		
+
 	}
-	
-	public void paintElement(){
+
+	public void paintElement() {
 		this.addMouseListener(new MouseAdapter() {
 
 			public void mousePressed(MouseEvent e) {
-				switch(sItem){
+				switch (sItem) {
 				case rect:
 					currentObject = new Rectangle();
 					break;
@@ -67,14 +63,14 @@ public class PaintPanel extends JPanel {
 					drawPolygon(e);
 					return;
 				}
-				
+
 				currentObject.setStartX(e.getX());
 				currentObject.setStartY(e.getY());
 
 			}
 
 			public void mouseReleased(MouseEvent e) {
-				if(sItem == SelectedItem.oval || sItem == SelectedItem.rect){
+				if (sItem == SelectedItem.oval || sItem == SelectedItem.rect) {
 					currentObject.setEndX(e.getX());
 					currentObject.setEndY(e.getY());
 					repaint();
@@ -87,37 +83,37 @@ public class PaintPanel extends JPanel {
 
 		this.addMouseMotionListener(new MouseMotionAdapter() {
 			public void mouseDragged(MouseEvent e) {
-				if(sItem == SelectedItem.oval || sItem == SelectedItem.rect){
+				if (sItem == SelectedItem.oval || sItem == SelectedItem.rect) {
 					currentObject.setEndX(e.getX());
 					currentObject.setEndY(e.getY());
 					repaint();
 				}
 			}
 		});
-					
+
 	}
-	
-	public void drawPolygon(MouseEvent e){			
-			if(e.getButton() == 1){
-				if(drawingPoly == false){
-					currentObject = new Poly();
-					drawingPoly = true;
-				}else{
-					currentObject.setEndX(e.getX());
-					currentObject.setEndY(e.getY());
-					((Poly) currentObject).setDot();
-					repaint();
-				}
-									
-			}else{
+
+	public void drawPolygon(MouseEvent e) {
+		if (e.getButton() == 1) {
+			if (drawingPoly == false) {
+				currentObject = new Poly();
+				drawingPoly = true;
+			} else {
+				currentObject.setEndX(e.getX());
+				currentObject.setEndY(e.getY());
+				((Poly) currentObject).setDot();
 				repaint();
-				paintList.add(currentObject);
-				currentObject = null;
-				drawingPoly = false;
-				mainFrame.itemDrawn(sItem);
 			}
+
+		} else {
+			repaint();
+			paintList.add(currentObject);
+			currentObject = null;
+			drawingPoly = false;
+			mainFrame.itemDrawn(sItem);
+		}
 	}
-	
+
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		g.drawImage(bImage, 0, 0, null);

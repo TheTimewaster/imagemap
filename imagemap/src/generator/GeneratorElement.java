@@ -36,8 +36,8 @@ public class GeneratorElement {
 			}
 		}
 	}
-	
-	public GraphObject getGObjClass(){
+
+	public GraphObject getGObjClass() {
 		return gObject;
 	}
 
