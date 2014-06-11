@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public class Rectangle implements GraphObject, Serializable {
 
-	private final Color strokeColor = Color.black;
+	private Color strokeColor = Color.black;
 	private final int strokeThickness = 2;
 	private static final long serialVersionUID = 6266248648024696224L;
 	private int sx;
@@ -85,6 +85,11 @@ public class Rectangle implements GraphObject, Serializable {
 		coords.add(ex);
 		coords.add(ey);
 		return coords;
+	}
+
+	@Override
+	public void selectGObject(boolean selected) {
+		strokeColor = (selected)? Color.red : Color.black;	
 	}
 
 }

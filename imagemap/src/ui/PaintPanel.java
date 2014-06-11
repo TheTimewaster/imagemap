@@ -40,12 +40,13 @@ public class PaintPanel extends JPanel {
 	private BufferedImage bImage;
 	boolean drawingPoly = false;
 	final MainFrame mainFrame;
+	private int currentIndex;
 
 	public PaintPanel(MainFrame mf) {
 		super();
 		sItem = SelectedItem.oval;
 		this.mainFrame = mf;
-
+		currentIndex = 0;
 	}
 
 	public void paintElement() {
@@ -183,6 +184,18 @@ public class PaintPanel extends JPanel {
 			e.printStackTrace();
 		}
 
+	}
+	
+	public void markElementInPPanel(int newIndex){
+		paintList.get(currentIndex).selectGObject(false);
+		paintList.get(newIndex).selectGObject(true);
+		repaint();
+		currentIndex = newIndex;
+	}
+	
+	public void removeElement(int index){
+		paintList.remove(index);
+		repaint();
 	}
 
 	public void emptyList() {

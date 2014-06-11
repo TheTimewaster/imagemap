@@ -18,5 +18,7 @@ public interface GraphObject {
 	public abstract void setEndY(int ey);
 
 	public abstract ArrayList<Integer> getCoords();
+	
+	public abstract void selectGObject(boolean selected);
 
 }

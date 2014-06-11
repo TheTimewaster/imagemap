@@ -7,10 +7,17 @@ import generator.HtmlGenerator;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.File;
 import java.util.ArrayList;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
@@ -46,9 +53,10 @@ public class MainFrame extends JFrame implements ActionListener {
 	JTextArea tArea = new JTextArea(5, 5);
 	// Generate Button
 	JButton generateButton = new JButton("Generate");
+	// Delete Button
+	JButton deleteButton = new JButton("Delete Entry");
 	// Table
-	String[] columns = { "SHAPE", "DIMENSIONS", "HREF", "ALT", "TITLE",
-			"DELETE" };
+	String[] columns = { "SHAPE", "DIMENSIONS", "HREF", "ALT", "TITLE"};
 	DefaultTableModel model = new DefaultTableModel(0, columns.length);
 	public JTable table = new JTable();
 
@@ -84,6 +92,9 @@ public class MainFrame extends JFrame implements ActionListener {
 		}
 
 		generateButton.addActionListener(this);
+		
+		deleteButton.addActionListener(this);
+		
 	}
 
 	public void initMenu() {
@@ -108,11 +119,11 @@ public class MainFrame extends JFrame implements ActionListener {
 		bar.add(helpMenu);
 
 		bar.add(generateButton);
+		
+		bar.add(deleteButton);
 
 		model.setColumnIdentifiers(columns);
 		table.setModel(model);
-		TableCellRenderer buttonRenderer = new ButtonRenderer();
-		table.getColumn("DELETE").setCellRenderer(buttonRenderer);
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
 		FileFilter filter = new FileNameExtensionFilter("Bilder", "gif", "png",
@@ -120,6 +131,8 @@ public class MainFrame extends JFrame implements ActionListener {
 		fChooser.addChoosableFileFilter(filter);
 
 		pPanel.paintElement();
+		
+		this.markElementinTable();
 	}
 
 	@Override
@@ -192,6 +205,18 @@ public class MainFrame extends JFrame implements ActionListener {
 			} else {
 				tArea.setText(generator.generateHTMLCode(img, gElementList));
 			}
+			break;
+			
+		case "Delete Entry":
+			int rowIndex = table.getSelectedRow();
+			if(rowIndex >= 0){
+				model.removeRow(rowIndex);
+				pPanel.removeElement(rowIndex);
+			}else{
+				JOptionPane.showMessageDialog(this,
+						"No table row selected! Cannot remove!",
+						"No table row selected", JOptionPane.ERROR_MESSAGE);
+			}
 		}
 
 		if (pItem[0].isSelected()) {
@@ -207,6 +232,18 @@ public class MainFrame extends JFrame implements ActionListener {
 		}
 
 	}
+	
+	public void markElementinTable(){
+		table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+	
+			@Override
+			public void valueChanged(ListSelectionEvent event) {
+				if(table.getSelectedRow() >= 0){
+					pPanel.markElementInPPanel(table.getSelectedRow());
+				}						
+			}
+		});
+	}
 
 	public void itemDrawn(SelectedItem item) {
 		selectedItem = item;
@@ -216,7 +253,7 @@ public class MainFrame extends JFrame implements ActionListener {
 		for (int i = 0; i < coords.size(); i++) {
 			dimString += coords.get(i);
 			if (i < coords.size() - 1) {
-				dimString += " ,";
+				dimString += ",";
 			}
 		}
 
@@ -236,25 +273,3 @@ public class MainFrame extends JFrame implements ActionListener {
 
 }
 
-
-class ButtonRenderer extends JButton implements TableCellRenderer {
-
-	private static final long serialVersionUID = 2638053191298953450L;
-
-	public ButtonRenderer() {
-		setOpaque(true);
-	}
-
-	public Component getTableCellRendererComponent(JTable table, Object value,
-			boolean isSelected, boolean hasFocus, int row, int column) {
-		if (isSelected) {
-			setForeground(table.getSelectionForeground());
-			setBackground(table.getSelectionBackground());
-		} else {
-			setForeground(table.getForeground());
-			setBackground(UIManager.getColor("Button.background"));
-		}
-		setText((value == null) ? "" : value.toString());
-		return this;
-	}
-}

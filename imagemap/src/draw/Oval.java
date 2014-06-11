@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 
 public class Oval implements GraphObject, Serializable {
-	private final Color strokeColor = Color.black;
+	private Color strokeColor = Color.black;
 	private final int strokeThickness = 2;
 	private static final long serialVersionUID = -8290256134052754277L;
 	private int sx;
@@ -57,7 +57,6 @@ public class Oval implements GraphObject, Serializable {
 			g2.setColor(strokeColor);
 			g2.drawOval(sx, sy, Math.abs(sx - ex), Math.abs(sy - ey));
 		}
-		// g2.drawOval(sx, sy, Math.abs(sx-ex), Math.abs(sy-ey));
 	}
 
 	@Override
@@ -69,6 +68,11 @@ public class Oval implements GraphObject, Serializable {
 		coords.add(ex);
 		coords.add(ey);
 		return coords;
+	}
+
+	@Override
+	public void selectGObject(boolean selected) {
+		strokeColor = (selected)? Color.red : Color.black;	
 	}
 
 }

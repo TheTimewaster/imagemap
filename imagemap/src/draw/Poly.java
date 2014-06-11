@@ -2,16 +2,18 @@ package draw;
 
 
 import java.awt.BasicStroke;
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.io.Serializable;
 import java.util.ArrayList;
 
 
 public class Poly implements GraphObject, Serializable {
-
+	
 	private final int strokeThickness = 2;
 	private static final long serialVersionUID = 2075175270982188237L;
 	private int newX;
+	private Color strokeColor;
 	private int newY;
 	ArrayList<Integer> coordYList;
 	ArrayList<Integer> coordXList;
@@ -41,6 +43,7 @@ public class Poly implements GraphObject, Serializable {
 
 		} else {
 			g2.setStroke(new BasicStroke(strokeThickness));
+			g2.setColor(strokeColor);
 			g2.drawPolygon(integerListtoArray(coordXList),
 					integerListtoArray(coordYList), coordXList.size());
 		}
@@ -92,6 +95,11 @@ public class Poly implements GraphObject, Serializable {
 	public void setDot() {
 		this.coordXList.add(newX);
 		this.coordYList.add(newY);
+	}
+
+	@Override
+	public void selectGObject(boolean selected) {
+		strokeColor = (selected)? Color.red : Color.black;	
 	}
 
 }
