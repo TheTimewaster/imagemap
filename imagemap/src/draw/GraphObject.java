@@ -2,6 +2,7 @@ package draw;
 
 
 import java.awt.Graphics2D;
+import java.util.ArrayList;
 
 
 public interface GraphObject {
@@ -16,6 +17,6 @@ public interface GraphObject {
 
 	public abstract void setEndY(int ey);
 
-	public abstract int[] getCoords();
+	public abstract ArrayList<Integer> getCoords();
 	
 }

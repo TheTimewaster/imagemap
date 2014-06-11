@@ -21,8 +21,7 @@ public class HtmlGenerator {
 	private final String header = "\n<h1>ImageMap</h1>";
 	private String areas = "";
 
-	public String generateHTMLCode(File image, List<GraphObject> paintlist,
-			List<String[]> attrList) {
+	public String generateHTMLCode(File image, List<GeneratorElement> gElementList) {
 		// TODO Auto-generated method stub
 		BufferedImage realImage = null;
 		int i = 0;
@@ -39,34 +38,14 @@ public class HtmlGenerator {
 
 		String mapTag = null;
 
-		for (GraphObject gObj : paintlist) {
-			String temp = null;
-			if (gObj instanceof Oval) {
-				temp = "\n<area shape = 'oval' coords='";
-			} else {
-				if (gObj instanceof Rectangle) {
-					temp = "\n<area shape = 'rect' coords='";
-				}else {
-					if (gObj instanceof Poly){
-						temp = "\n<area shape = 'poly' coords='";
-					}
-				}
-
-			}
+		for (GeneratorElement gElem : gElementList) {
+			String temp = "";
 			
-			for(int x = 0 ; x < gObj.getCoords().length ; x++){
-				temp += gObj.getCoords()[x];
-					if(x < gObj.getCoords().length - 1){
-						temp += ",";
-					}
-			}
-			
-			temp += "' href='" + attrList.get(i)[0] + "' alt='"
-					+ attrList.get(i)[1] + "' title = '" + attrList.get(i)[2]
-					+ "' />";				
+			temp = "\n<area shape = '" + gElem.printGObject() + "' coords='" + gElem.printCoords() + "' href='" + gElem.printhref() + "' alt='"
+					+ gElem.printalt() + "' title = '" + gElem.printtitle()
+					+ "' />";;			
 			
 			areas += temp;
-			i++;
 		}
 
 		mapTag = "\n<map name='imgmap'>" + areas + "\n</map>\n";

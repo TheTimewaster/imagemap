@@ -1,6 +1,7 @@
 package ui;
 
 
+import generator.GeneratorElement;
 import generator.HtmlGenerator;
 import generator.HtmlGenerator;
 
@@ -118,7 +119,7 @@ public class MainFrame extends JFrame implements ActionListener {
 		FileFilter filter = new FileNameExtensionFilter("Bilder", "gif", "png",
 				"jpg");
 		fChooser.addChoosableFileFilter(filter);
-		
+
 		pPanel.paintElement();
 	}
 
@@ -175,29 +176,38 @@ public class MainFrame extends JFrame implements ActionListener {
 			HtmlGenerator generator = new HtmlGenerator();
 
 			ArrayList<String[]> attrList = new ArrayList<String[]>();
+			ArrayList<GeneratorElement> gElementList = new ArrayList<GeneratorElement>();
 
 			for (int count = 0; count < model.getRowCount(); count++) {
-				String[] dataRow = new String[3];
-				if (model.getValueAt(count, 2) == null) {
-					dataRow[0] = "#";
-				} else {
-					dataRow[0] = model.getValueAt(count, 2).toString();
-				}
-
-				if (model.getValueAt(count, 3) == null) {
-					dataRow[1] = "";
-				} else {
-					dataRow[1] = model.getValueAt(count, 3).toString();
-				}
-
-				if (model.getValueAt(count, 4) == null) {
-					dataRow[2] = "";
-				} else {
-					dataRow[2] = model.getValueAt(count, 4).toString();
-				}
-
-				attrList.add(dataRow);
+				GeneratorElement gElement = new GeneratorElement(pPanel
+						.getPaintList().get(count), pPanel.getPaintList()
+						.get(count).getCoords(), model.getValueAt(count, 2).toString(),
+						model.getValueAt(count, 3).toString(), model.getValueAt(count, 4).toString());
+				gElementList.add(gElement);
 			}
+
+//			for (int count = 0; count < model.getRowCount(); count++) {
+//				String[] dataRow = new String[3];
+//				if (model.getValueAt(count, 2) == null) {
+//					dataRow[0] = "#";
+//				} else {
+//					dataRow[0] = model.getValueAt(count, 2).toString();
+//				}
+//
+//				if (model.getValueAt(count, 3) == null) {
+//					dataRow[1] = "";
+//				} else {
+//					dataRow[1] = model.getValueAt(count, 3).toString();
+//				}
+//
+//				if (model.getValueAt(count, 4) == null) {
+//					dataRow[2] = "";
+//				} else {
+//					dataRow[2] = model.getValueAt(count, 4).toString();
+//				}
+//
+//				attrList.add(dataRow);
+//			}
 
 			if (img == null) {
 				JOptionPane.showMessageDialog(this,
@@ -205,20 +215,20 @@ public class MainFrame extends JFrame implements ActionListener {
 						"No Image", JOptionPane.ERROR_MESSAGE);
 			} else {
 				tArea.setText(generator.generateHTMLCode(img,
-						pPanel.getPaintList(), attrList));
+						gElementList));
 			}
 		}
 
 		if (pItem[0].isSelected()) {
-			pPanel.setsItem(SelectedItem.rect);			
-		}else{
+			pPanel.setsItem(SelectedItem.rect);
+		} else {
 			if (pItem[1].isSelected()) {
 				pPanel.setsItem(SelectedItem.oval);
-			}else{
+			} else {
 				if (pItem[2].isSelected()) {
 					pPanel.setsItem(SelectedItem.polygon);
 				}
-			}			
+			}
 		}
 
 	}
@@ -226,27 +236,26 @@ public class MainFrame extends JFrame implements ActionListener {
 	public void itemDrawn(SelectedItem item) {
 		selectedItem = item;
 		String dimString = "";
-		int[] coords = pPanel.getPaintList()
+		ArrayList<Integer> coords = pPanel.getPaintList()
 				.get(pPanel.getPaintList().size() - 1).getCoords();
-		for (int i = 0; i < coords.length; i++) {
-			dimString += coords[i];
-			if (i < coords.length - 1) {
+		for (int i = 0; i < coords.size(); i++) {
+			dimString += coords.get(i);
+			if (i < coords.size() - 1) {
 				dimString += " ,";
 			}
 		}
-		
-		switch(selectedItem){
+
+		switch (selectedItem) {
 		case oval:
-			model.addRow(new Object[] { "Oval", dimString, "", "", "",
-			"Delete" });
+			model.addRow(new Object[] { "Oval", dimString, "", "", "", "Delete" });
 			break;
 		case rect:
 			model.addRow(new Object[] { "Rectangle", dimString, "", "", "",
-			"Delete" });
+					"Delete" });
 			break;
 		case polygon:
 			model.addRow(new Object[] { "Polygon", dimString, "", "", "",
-			"Delete" });
+					"Delete" });
 		}
 	}
 

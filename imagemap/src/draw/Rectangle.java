@@ -5,6 +5,7 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.io.Serializable;
+import java.util.ArrayList;
 
 
 public class Rectangle implements GraphObject, Serializable {
@@ -76,13 +77,13 @@ public class Rectangle implements GraphObject, Serializable {
 	}
 
 	@Override
-	public int[] getCoords() {
+	public ArrayList<Integer> getCoords() {
+		ArrayList<Integer> coords = new ArrayList<Integer>();
 		// TODO Auto-generated method stub
-		int[] coords = new int[4];
-		coords[0] = sx;
-		coords[1] = sy;
-		coords[2] = ex;
-		coords[3] = ey;
+			coords.add(sx);
+			coords.add(sy);
+			coords.add(ex);
+			coords.add(ey);
 		return coords;
 	}
 

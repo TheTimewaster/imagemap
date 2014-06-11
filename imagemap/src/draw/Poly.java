@@ -79,14 +79,13 @@ public class Poly implements GraphObject, Serializable {
 	}
 
 	@Override
-	public int[] getCoords() {
+	public ArrayList<Integer> getCoords() {
 		// TODO Auto-generated method stub
-		int[] coords = new int[coordXList.size() + coordYList.size()];
+		ArrayList<Integer> coords = new ArrayList<Integer>();
 		for(int i = 0 ; i < coordXList.size() ; i++){
-			coords[2*i] = coordXList.get(i);
-			coords[2*i + 1] = coordYList.get(i);
-		}
-		
+			coords.add(coordXList.get(i));
+			coords.add(coordYList.get(i));
+		}		
 		return coords;
 	}
 	
