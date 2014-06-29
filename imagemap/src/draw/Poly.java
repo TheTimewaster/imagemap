@@ -29,7 +29,8 @@ public class Poly implements GraphObject, Serializable {
 		// TODO Auto-generated method stub
 		if (tmp == false) {
 			g2.setStroke(new BasicStroke(strokeThickness));
-			if (coordXList.size() < 2) {
+			if (coordXList.size() < 2 && coordXList.size() > 0) {
+				
 				g2.drawLine(coordXList.get(0), coordYList.get(0),
 						coordXList.get(0), coordYList.get(0));
 			} else {
